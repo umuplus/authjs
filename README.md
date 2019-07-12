@@ -5,7 +5,7 @@ key manager and auth wrapper for jwt in node.js
 ## Install
 
 ```bash
-npm i --save authjs
+npm i --save node-authjs
 ```
 
 You can also clone this repository and make use of it yourself.
