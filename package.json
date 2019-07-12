@@ -1,7 +1,7 @@
 {
   "name": "authjs",
   "version": "0.1.2",
-  "description": "key manager and auth features with jwt in node.js",
+  "description": "key manager and auth wrapper for jwt in node.js",
   "keywords": [
     "jwt",
     "auth",
