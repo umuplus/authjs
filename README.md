@@ -37,8 +37,8 @@ npm test
 ```js
 const AuthJS = require('authjs');
 
-const auth = new AuthJS({ expiresIn: '2 days' });
+const auth = new AuthJS({ jwt: { expiresIn: '2 days' } });
 await auth.generate(); // async
-const token = auth.sign(data, auth.key('private'));
-const r = auth.verify(token, auth.key());
+const token = auth.sign(data);
+const r = auth.verify(token);
 ```
