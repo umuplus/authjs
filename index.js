@@ -46,6 +46,17 @@ class Auth {
     }
 
     /**
+     * @description returns content of key
+     * @param {boolean} [isPrivate]
+     * @returns String
+     * @private
+     * @memberof Auth
+     */
+    _key(isPrivate) {
+        return this._keys[ isPrivate ? 'private' : 'public' ];
+    }
+
+    /**
      * @description
      * @param {string} [keys=[ 'private', 'public' ]] keys to load their files
      * @private
@@ -105,16 +116,6 @@ class Auth {
     }
 
     /**
-     * @description returns content of key
-     * @param {boolean} [isPrivate]
-     * @returns String
-     * @memberof Auth
-     */
-    key(isPrivate) {
-        return this._keys[ isPrivate ? 'private' : 'public' ];
-    }
-
-    /**
      * @description helper method to sign data with jsonwebtoken
      * @param {Object} data data
      * @returns String
@@ -124,7 +125,7 @@ class Auth {
         if (is.not.object(data) || is.array(data) || is.empty(data))
             throw new Error('invalid data');
 
-        return jwt.sign(data, this.key(true), this._options.jwt);
+        return jwt.sign(data, this._key(true), this._options.jwt);
     }
 
     /**
@@ -136,7 +137,7 @@ class Auth {
     verify(token) {
         if (is.not.string(token)) throw new Error('invalid token');
 
-        return jwt.verify(token, this.key(), this._options.jwt);
+        return jwt.verify(token, this._key(), this._options.jwt);
     }
 }
 
