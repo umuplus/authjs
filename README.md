@@ -28,7 +28,6 @@ npm test
 ## Methods
 
 - **.generate(overwrite, both):** generates private and/or public keys by parameters
-- **.key(isPrivate):** returns content of key
 - **.sign(data):** helper method to sign data with jsonwebtoken
 - **.verify(token):** helper method to verify token with jsonwebtoken
 
