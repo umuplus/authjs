@@ -34,7 +34,7 @@ npm test
 ## Examples
 
 ```js
-const AuthJS = require('authjs');
+const AuthJS = require('node-authjs');
 
 const auth = new AuthJS({ jwt: { expiresIn: '2 days' } });
 await auth.generate(); // async
