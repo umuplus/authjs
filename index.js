@@ -30,18 +30,33 @@ class Auth {
      * @memberof Auth
      */
     _defaults() {
-        if (is.not.string(this._options.keygen) || is.empty(this._options.keygen))
+        if (
+            is.not.string(this._options.keygen) ||
+            is.empty(this._options.keygen)
+        )
             this._options.keygen = 'ssh-keygen';
-        if (is.not.string(this._options.openssl) || is.empty(this._options.openssl))
+        if (
+            is.not.string(this._options.openssl) ||
+            is.empty(this._options.openssl)
+        )
             this._options.openssl = 'openssl';
-        if (is.not.string(this._options.private) || is.empty(this._options.private))
+        if (
+            is.not.string(this._options.private) ||
+            is.empty(this._options.private)
+        )
             this._options.private = joinPath(tmpdir(), 'private.key');
-        if (is.not.string(this._options.public) || is.empty(this._options.public))
-            this._options.public = `${ this._options.private }.pub`;
+        if (
+            is.not.string(this._options.public) ||
+            is.empty(this._options.public)
+        )
+            this._options.public = `${this._options.private}.pub`;
 
         if (is.not.object(this._options.jwt) || is.array(this._options.jwt))
             this._options.jwt = {};
-        if (is.not.string(this._options.jwt.algorithm) || is.empty(this._options.jwt.algorithm))
+        if (
+            is.not.string(this._options.jwt.algorithm) ||
+            is.empty(this._options.jwt.algorithm)
+        )
             this._options.jwt.algorithm = 'RS256';
     }
 
@@ -53,7 +68,7 @@ class Auth {
      * @memberof Auth
      */
     _key(isPrivate) {
-        return this._keys[ isPrivate ? 'private' : 'public' ];
+        return this._keys[isPrivate ? 'private' : 'public'];
     }
 
     /**
@@ -62,7 +77,7 @@ class Auth {
      * @private
      * @memberof Auth
      */
-    async _loadKeys(keys = [ 'private', 'public' ]) {
+    async _loadKeys(keys = ['private', 'public']) {
         if (is.array(keys))
             for (let key of keys) {
                 const path = this._options[key];
@@ -77,10 +92,16 @@ class Auth {
      * @memberof Auth
      */
     async _generatePublicKey() {
-        const { openssl, private: privateKey, public: publicKey } = this._options;
+        const {
+            openssl,
+            private: privateKey,
+            public: publicKey,
+        } = this._options;
         if (exists(publicKey)) unlink(publicKey);
-        await execute(`${ openssl } rsa -in ${ privateKey } -pubout -outform PEM -out ${ publicKey }`);
-        await this._loadKeys([ 'public' ]);
+        await execute(
+            `${openssl} rsa -in ${privateKey} -pubout -outform PEM -out ${publicKey}`
+        );
+        await this._loadKeys(['public']);
     }
 
     /**
@@ -91,8 +112,8 @@ class Auth {
     async _generatePrivateKey() {
         const { keygen, private: privateKey } = this._options;
         if (exists(privateKey)) unlink(privateKey);
-        await execute(`${ keygen } -t rsa -b 4096 -m PEM -f ${ privateKey }`);
-        await this._loadKeys([ 'private' ]);
+        await execute(`${keygen} -t rsa -b 4096 -m PEM -f ${privateKey}`);
+        await this._loadKeys(['private']);
         await this._generatePublicKey();
     }
 
@@ -107,7 +128,7 @@ class Auth {
         else if (overwrite) {
             if (both) await this._generatePrivateKey();
             else {
-                await this._loadKeys([ 'private' ]);
+                await this._loadKeys(['private']);
                 await this._generatePublicKey();
             }
         } else {
@@ -140,6 +161,5 @@ class Auth {
         return jwt.verify(token, this._key(), this._options.jwt);
     }
 }
-
 
 module.exports = Auth;
